@@ -1,37 +1,34 @@
 const express = require('express');
 const router = express.Router();
 const Group = require('../models/Group');
-const { protect, approvedOnly, adminOnly } = require('../middleware/auth');
-const { uploadImage } = require('../config/cloudinary');
+const { protect } = require('../middleware/auth');
 
-router.get('/', protect, approvedOnly, async (req, res) => {
+// Get all groups - any logged in user dekh sakta hai
+router.get('/', protect, async (req, res) => {
   try {
     const groups = await Group.find()
-      .populate('members.user', 'name avatar')
       .populate('createdBy', 'name avatar')
       .sort({ createdAt: -1 });
+
+    console.log(`Groups found: ${groups.length}`); // debug log
     res.json({ groups });
-  } catch (err) { res.status(500).json({ error: 'Server error' }); }
+  } catch (err) {
+    console.error('Groups fetch error:', err);
+    res.status(500).json({ error: 'Server error: ' + err.message });
+  }
 });
 
-router.post('/', protect, adminOnly, uploadImage.single('avatar'), async (req, res) => {
+// Get single group with images
+router.get('/:id', protect, async (req, res) => {
   try {
-    const { name, description } = req.body;
-    const group = await Group.create({
-      name, description,
-      avatar: req.file?.path || '',
-      avatarPublicId: req.file?.filename || '',
-      createdBy: req.user._id,
-    });
-    res.status(201).json({ group });
-  } catch (err) { res.status(500).json({ error: 'Server error' }); }
-});
-
-router.delete('/:id', protect, adminOnly, async (req, res) => {
-  try {
-    await Group.findByIdAndDelete(req.params.id);
-    res.json({ message: 'Group deleted' });
-  } catch (err) { res.status(500).json({ error: 'Server error' }); }
+    const group = await Group.findById(req.params.id)
+      .populate('createdBy', 'name avatar')
+      .populate('images.uploadedBy', 'name avatar');
+    if (!group) return res.status(404).json({ error: 'Group nahi mila' });
+    res.json({ group });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 module.exports = router;
