@@ -25,19 +25,17 @@ connectDB();
 app.use(helmet({ crossOriginResourcePolicy: false }));
 app.use(
   cors({
-    origin: [
-      process.env.CLIENT_URL || "http://localhost:3000",
-      process.env.FRONTEND_URL || "http://localhost:3000",
-      "http://localhost:3000",
-    ],
+    origin: true,
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
   }),
 );
+
+// Rate limiting
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 500, // increased for dev
+  max: 500,
   message: { error: "Too many requests" },
 });
 app.use("/api/", limiter);
