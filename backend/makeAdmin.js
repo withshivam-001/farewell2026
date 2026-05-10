@@ -2,7 +2,7 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 const User = require('./src/models/User');
 
-const ADMIN_EMAIL = 'your@email.com'; // ← YAHAN APNA EMAIL DAALO
+const ADMIN_EMAIL = 'shivvamvishwakarma@gmail.com'; // ← YAHAN APNA EMAIL DAALO
 
 async function main() {
   try {
