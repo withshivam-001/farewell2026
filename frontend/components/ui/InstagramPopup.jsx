@@ -7,8 +7,8 @@ import useAuthStore from '../../store/authStore'
 export default function InstagramPopup() {
   const [visible, setVisible] = useState(false)
   const { user } = useAuthStore()
-  const ADMIN_IG = 'https://instagram.com/youradminhandle'
-  const ADMIN_HANDLE = '@adminhandle'
+  const ADMIN_IG = 'https://www.instagram.com/withshivam_._/'
+  const ADMIN_HANDLE = '@withshivam_._/'
 
   useEffect(() => {
     if (!user) return

@@ -148,7 +148,7 @@ export default function ProfileSidebar() {
             <div className="px-6 py-4 border-t border-white/8">
               <p className="text-white/30 text-xs uppercase tracking-wider mb-3">Follow Admin</p>
               <a
-                href="https://instagram.com/youradminhandle"
+                href="https://www.instagram.com/withshivam_._/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-3 px-4 py-2.5 rounded-xl bg-gradient-to-r from-purple-900/20 to-pink-900/20 border border-white/8 hover:border-white/20 transition-all group"
