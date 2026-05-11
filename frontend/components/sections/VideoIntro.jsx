@@ -6,27 +6,19 @@ import { motion, AnimatePresence } from 'framer-motion'
 export default function VideoIntro({ onSkip, onEnded }) {
   const videoRef = useRef(null)
   const [showSkip, setShowSkip] = useState(false)
-  const [visible, setVisible] = useState(false)
+  const [visible, setVisible] = useState(true)
 
   useEffect(() => {
-    const seen = sessionStorage.getItem('intro-seen')
-    if (seen) {
-      onEnded()
-      return
-    }
-    setVisible(true)
     const t = setTimeout(() => setShowSkip(true), 1500)
     return () => clearTimeout(t)
   }, [])
 
   const handleSkip = () => {
-    sessionStorage.setItem('intro-seen', 'true')
     setVisible(false)
     setTimeout(onSkip, 500)
   }
 
   const handleEnded = () => {
-    sessionStorage.setItem('intro-seen', 'true')
     setVisible(false)
     setTimeout(onEnded, 400)
   }
@@ -41,6 +33,7 @@ export default function VideoIntro({ onSkip, onEnded }) {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.5 }}
         >
+          {/* Video — replace src with your actual video URL */}
           <video
             ref={videoRef}
             className="absolute inset-0 w-full h-full object-cover"
@@ -51,6 +44,7 @@ export default function VideoIntro({ onSkip, onEnded }) {
             onEnded={handleEnded}
           />
 
+          {/* Dark overlay */}
           <div
             className="absolute inset-0"
             style={{
@@ -58,6 +52,7 @@ export default function VideoIntro({ onSkip, onEnded }) {
             }}
           />
 
+          {/* Center text */}
           <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -86,6 +81,7 @@ export default function VideoIntro({ onSkip, onEnded }) {
             </motion.div>
           </div>
 
+          {/* Skip button */}
           <AnimatePresence>
             {showSkip && (
               <motion.button
